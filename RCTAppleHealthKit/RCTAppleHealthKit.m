@@ -32,6 +32,11 @@ RCT_EXPORT_METHOD(isAvailable:(RCTResponseSenderBlock)callback)
     [self isHealthKitAvailable:callback];
 }
 
+RCT_EXPORT_METHOD(isAuthorized:(RCTResponseSenderBlock)callback)
+{
+    [self isHealthkitAuthorized:callback];
+}
+
 RCT_EXPORT_METHOD(initHealthKit:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
     [self initializeHealthKit:input callback:callback];
@@ -195,6 +200,15 @@ RCT_EXPORT_METHOD(saveMindfulSession:(NSDictionary *)input callback:(RCTResponse
         isAvailable = YES;
     }
     callback(@[[NSNull null], @(isAvailable)]);
+}
+
+- (void)isHealthkitAuthorized:(RCTResponseSenderBlock)callback
+{
+    BOOL isAuthorized = NO;
+    if ([_healthStore authorizationStatusForType:[HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass]] == HKAuthorizationStatusSharingAuthorized) {
+        isAuthorized = NO;
+    }
+    callback(@[[NSNull null], @(isAuthorized)]);
 }
 
 
